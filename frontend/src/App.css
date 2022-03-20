@@ -1,0 +1,48 @@
+.wrapper {
+    @apply container px-5 mx-auto
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @apply text-sky-600 font-semibold
+}
+
+h1 {
+    @apply text-6xl
+}
+
+h2 {
+    @apply text-5xl
+}
+
+h3 {
+    @apply text-4xl
+}
+
+h4 {
+    @apply text-3xl
+}
+
+h5 {
+    @apply text-2xl
+}
+
+h6 {
+    @apply text-xl
+}
+
+.btn {
+    @apply bg-sky-600 text-white rounded px-4 py-2 font-semibold
+}
+
+.form-label {
+    @apply text-gray-600 font-medium
+}
+
+.form-input {
+    @apply rounded w-full border border-gray-200 bg-gray-100 focus:border-sky-600 focus:ring-sky-600
+}
