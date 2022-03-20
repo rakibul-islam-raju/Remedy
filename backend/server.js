@@ -4,7 +4,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 // rotues
 // const newsRoutes = require("./routes/newsRoutes");
-// const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/users");
 // const eventRoutes = require("./routes/eventRoutes");
 
 // db connection
@@ -18,7 +18,7 @@ app.use(express.json());
 
 // routers
 // app.use("/api/news", newsRoutes); // news
-// app.use("/api/users", userRoutes); // users
+app.use("/api/users", userRoutes); // users
 // app.use("/api/events", eventRoutes); // users
 
 // hello world
