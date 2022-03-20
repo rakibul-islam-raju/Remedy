@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import axion from "axios";
+import { loginUrl, registerUrl } from "../utils/urls";
+import axios from "axios";
 
 const AuthContext = React.createContext();
 
@@ -29,8 +32,20 @@ export function AuthProvider({ children }) {
 	}, []);
 
 	// signup
-	async function signup(email, password) {
-		setCurrentUser({});
+	async function signup(formData) {
+		try {
+			const { data } = await axios.post(registerUrl, formData);
+			setCurrentUser(data.result);
+			setAuthToken(data.token);
+
+			localStorage.setItem("remedy_user", JSON.stringify(data.result));
+			localStorage.setItem(
+				"remedy_user_token",
+				JSON.stringify(data.token)
+			);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	// google login
@@ -46,7 +61,14 @@ export function AuthProvider({ children }) {
 	}
 
 	// login
-	async function login(email, password) {}
+	async function login(credentials) {
+		try {
+			const { data } = await axios.post(loginUrl, credentials);
+			console.log("login data =>", data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	// logout
 	function logout() {

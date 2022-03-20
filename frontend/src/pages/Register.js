@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { GoogleLogin } from "react-google-login";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
-const initialState = { email: "", password: "" };
+const initialState = {
+	fullName: "",
+	email: "",
+	password: "",
+	confirmPassword: "",
+};
 
-const Login = () => {
+const Register = () => {
 	const [formData, setFormData] = useState(initialState);
 
-	const { loginWithGoogle, currentUser, login } = useAuth();
+	const { signup, currentUser } = useAuth();
 	const navigate = useNavigate();
-
-	const googleSuccess = async (res) => {
-		await loginWithGoogle(res);
-	};
-
-	const googleFailure = (error) => {
-		console.log("error =>", error);
-	};
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +21,14 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		login(formData);
+
+		// validation
+		if (formData.password !== formData.confirmPassword) {
+			alert("Password does not match");
+			return;
+		}
+		// console.log("formData =>", formData);
+		signup(formData);
 	};
 
 	useEffect(() => {
@@ -36,22 +39,31 @@ const Login = () => {
 
 	return (
 		<div className="w-full md:w-4/12 mx-auto">
-			<h4 className="text-center py-8">Login</h4>
-			<GoogleLogin
-				className="w-full rounded mt-3 text-center"
-				clientId={`${process.env.REACT_APP_OAUTH_CLIENT_ID}`}
-				onSuccess={googleSuccess}
-				onFailure={googleFailure}
-				cookiePolicy={"single_host_origin"}
-			/>
-			<div className="py-4 text-lg text-center text-gray-600">or</div>
+			<h4 className="text-center py-8">Create New Account</h4>
+
 			<form onSubmit={handleSubmit}>
+				<div className="mb-2">
+					<label htmlFor="fullName" className="form-label">
+						Full Name
+					</label>
+					<input
+						required
+						value={formData?.fullName}
+						onChange={handleChange}
+						type="text"
+						name="fullName"
+						id="fullName"
+						placeholder="Full Name"
+						className="form-input"
+					/>
+				</div>
 				<div className="mb-2">
 					<label htmlFor="email" className="form-label">
 						Email Address
 					</label>
 					<input
 						required
+						value={formData?.email}
 						onChange={handleChange}
 						type="email"
 						name="email"
@@ -66,6 +78,7 @@ const Login = () => {
 					</label>
 					<input
 						required
+						value={formData?.password}
 						onChange={handleChange}
 						type="password"
 						name="password"
@@ -74,20 +87,35 @@ const Login = () => {
 						className="form-input"
 					/>
 				</div>
+				<div className="mb-2">
+					<label htmlFor="confirmPassword" className="form-label">
+						Confirm Password
+					</label>
+					<input
+						required
+						value={formData?.confirmPassword}
+						onChange={handleChange}
+						type="password"
+						name="confirmPassword"
+						id="confirmPassword"
+						placeholder="Confirm Password"
+						className="form-input"
+					/>
+				</div>
 				<button type="submit" className="btn w-full">
-					LOGIN
+					Register
 				</button>
 			</form>
 
 			<p className="mt-3">
-				Need an account?
-				<Link to="/register" className="text-sky-600">
+				Already have an acccount?
+				<Link to="/login" className="text-sky-600">
 					{" "}
-					Register now.
+					Login now.
 				</Link>
 			</p>
 		</div>
 	);
 };
 
-export default Login;
+export default Register;

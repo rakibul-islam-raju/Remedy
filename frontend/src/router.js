@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainContainer from "./containers/MainContainer";
-import { Home, SingleService, Appoinment, Login } from "./pages";
+import { Home, SingleService, Appoinment, Login, Register } from "./pages";
 
 const router = () => {
 	return (
@@ -14,6 +14,7 @@ const router = () => {
 					/>
 					<Route path="/appoinment" element={<Appoinment />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
