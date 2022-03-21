@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext";
 const Header = () => {
 	const { currentUser, logout } = useAuth();
 
+	console.log("currentuser =>", currentUser);
+
 	return (
 		<header className="py-4 bg-sky-600 text-white">
 			<nav className="wrapper flex flex-wrap justify-between items-center">
@@ -22,6 +24,16 @@ const Header = () => {
 						<Link to="/">Labs</Link>
 					</li>
 					<li>
+						{currentUser?.isAdmin && (
+							<Link
+								to="/dashboard"
+								// className="bg-white text-sky-600 font-semibold rounded px-4 py-2"
+							>
+								Dashboard
+							</Link>
+						)}
+					</li>
+					<li>
 						{!currentUser?.email ? (
 							<Link
 								to="/login"
@@ -30,12 +42,14 @@ const Header = () => {
 								Login
 							</Link>
 						) : (
-							<button
-								className="bg-white text-sky-600 font-semibold rounded px-4 py-2"
-								onClick={logout}
-							>
-								Logout
-							</button>
+							<>
+								<button
+									className="bg-white text-sky-600 font-semibold rounded px-4 py-2"
+									onClick={logout}
+								>
+									Logout
+								</button>
+							</>
 						)}
 					</li>
 				</ul>

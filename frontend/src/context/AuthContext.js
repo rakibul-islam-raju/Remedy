@@ -64,7 +64,15 @@ export function AuthProvider({ children }) {
 	async function login(credentials) {
 		try {
 			const { data } = await axios.post(loginUrl, credentials);
-			console.log("login data =>", data);
+			// console.log("login data =>", data);
+			setCurrentUser(data.result);
+			setAuthToken(data.token);
+
+			localStorage.setItem("remedy_user", JSON.stringify(data.result));
+			localStorage.setItem(
+				"remedy_user_token",
+				JSON.stringify(data.token)
+			);
 		} catch (error) {
 			console.log(error);
 		}
