@@ -3,9 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 // rotues
-// const newsRoutes = require("./routes/newsRoutes");
 const userRoutes = require("./routes/users");
-// const eventRoutes = require("./routes/eventRoutes");
+const doctorRoutes = require("./routes/doctors");
+const appoinmentRoutes = require("./routes/appoinment");
 
 // db connection
 connectDB();
@@ -17,13 +17,13 @@ app.use(cors());
 app.use(express.json());
 
 // routers
-// app.use("/api/news", newsRoutes); // news
 app.use("/api/users", userRoutes); // users
-// app.use("/api/events", eventRoutes); // users
+app.use("/api/doctors", doctorRoutes); // doctors
+app.use("/api/appoinments", appoinmentRoutes); // appoinments
 
 // hello world
 app.get("/", (req, res) => {
-	res.send("hello World!");
+	res.json("hello World!");
 });
 
 // port

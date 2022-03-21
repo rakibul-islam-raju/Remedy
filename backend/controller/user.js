@@ -15,13 +15,15 @@ const login = async (req, res) => {
 			password,
 			existingUser.password
 		);
+
 		if (!isPassCorrect)
 			return res.status(404).json({ message: "Invalid credentials!" });
 
 		const token = jwt.sign(
 			{
+				_id: existingUser._id,
 				email: existingUser.email,
-				id: existingUser._id,
+				isAdmin: existingUser.isAdmin,
 			},
 			process.env.jwt_secret_key,
 			{ expiresIn: "1h" }
@@ -29,7 +31,7 @@ const login = async (req, res) => {
 
 		res.status(200).json({ result: existingUser, token });
 	} catch (error) {
-		res.status(500).json({ message: "Something went wrong!" });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -41,14 +43,19 @@ const register = async (req, res) => {
 		if (existingUser)
 			return res.status(404).json({ message: "User already exist!" });
 
-		const hashedPass = bcrypt.hash(password, 12);
+		const hashedPassword = await bcrypt.hash(password, 12);
 
-		const result = await User.create({ fullName, email, hashedPass });
+		const result = await User.create({
+			fullName,
+			email,
+			password: hashedPassword,
+		});
 
 		const token = jwt.sign(
 			{
+				_id: result._id,
 				email: result.email,
-				id: result._id,
+				isAdmin: result.isAdmin,
 			},
 			process.env.jwt_secret_key,
 			{ expiresIn: "1h" }
@@ -56,7 +63,7 @@ const register = async (req, res) => {
 
 		res.status(200).json({ result, token });
 	} catch (error) {
-		res.status(500).json({ message: "Something went wrong!" });
+		res.status(500).json({ message: error.message });
 	}
 };
 
